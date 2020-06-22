@@ -66,7 +66,6 @@ Vault password: (provide your vault password)
 
 ```
 > vi hosts
-
 ```
 
 Contents inside hosts file to handle new EC2 instance
