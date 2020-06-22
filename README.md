@@ -95,3 +95,55 @@ Create a new file called aws_provisioning.yml with the following:
   vars_files:
     - aws_keys.yml
 ```
+
+### Creating the EC2 security group
+
+Add the following code to the aws_provisioning.yml file
+
+```
+  tasks:
+      - name: Create a security group
+        ec2_group:
+          name: "{{ security_group }}"
+          description: The ansible webservers security group
+          region: "{{ region }}"
+          aws_access_key: "{{ ec2_access_key }}"
+          aws_secret_key: "{{ ec2_secret_key }}"
+          rules:
+            - proto: tcp
+              from_port: 22
+              to_port: 22
+              cidr_ip: 0.0.0.0/0
+            - proto: tcp
+              from_port: 80
+              to_port: 80
+              cidr_ip: 0.0.0.0/0
+            - proto: tcp
+              from_port: 443
+              to_port: 443
+              cidr_ip: 0.0.0.0/0
+          rules_egress:
+            - proto: all
+              cidr_ip: 0.0.0.0/0
+          vpc_id: vpc-8ed221e9
+```
+Notes: vpc_id is the VPC of an existing environment already created or it could be default vpc
+
+### Creating & Launching the AWS EC2 instance
+
+```
+      - name: Launch the new EC2 Instance
+        ec2:
+          aws_access_key: "{{ ec2_access_key }}"
+          aws_secret_key: "{{ ec2_secret_key }}"
+          group: "{{ security_group }}"
+          instance_type: "{{ instance_type }}"
+          image: "{{ image }}"
+          wait: yes
+          wait_timeout: 500
+          region: "{{ region }}"
+          keypair: "{{ keypair }}"
+          count: "{{ count }}"
+          vpc_subnet_id: subnet-cf2372b9
+        register: ec2
+```
