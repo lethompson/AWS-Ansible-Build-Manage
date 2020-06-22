@@ -1,0 +1,80 @@
+---
+- hosts: local
+  connection: local
+  gather_facts: False
+  vars:
+    instance_type: t2.micro
+    security_group: webserver_ansible_sg
+    image: ami-b63769a1 
+    keypair: ansible_lennoxt
+    region: us-east-1
+    count: 1
+  vars_files:
+    - aws_keys.yml	
+
+  tasks:
+      - name: Create a security group
+        ec2_group:
+          name: "{{ security_group }}"
+          description: The ansible webservers security group
+          region: "{{ region }}"
+          aws_access_key: "{{ ec2_access_key }}"
+          aws_secret_key: "{{ ec2_secret_key }}"
+          rules:
+            - proto: tcp
+              from_port: 22
+              to_port: 22
+              cidr_ip: 0.0.0.0/0
+            - proto: tcp
+              from_port: 80
+              to_port: 80
+              cidr_ip: 0.0.0.0/0
+            - proto: tcp
+              from_port: 443
+              to_port: 443
+              cidr_ip: 0.0.0.0/0
+          rules_egress:
+            - proto: all
+              cidr_ip: 0.0.0.0/0
+          vpc_id: vpc-8ed221e9
+
+      - name: Launch the new EC2 Instance
+        ec2:
+          aws_access_key: "{{ ec2_access_key }}"
+          aws_secret_key: "{{ ec2_secret_key }}"
+          group: "{{ security_group }}"
+          instance_type: "{{ instance_type }}"
+          image: "{{ image }}"
+          wait: yes
+          wait_timeout: 500
+          region: "{{ region }}"
+          keypair: "{{ keypair }}"
+          count: "{{ count }}"
+          vpc_subnet_id: subnet-cf2372b9
+        register: ec2
+
+      - name: Add the newly created host
+        add_host:
+          name: "{{ item.public_ip }}"
+          groups: webservers
+        with_items: "{{ ec2.instances }}"
+
+      - name: Add tag to Instance(s)
+        ec2_tag:
+          aws_access_key: "{{ ec2_access_key }}"
+          aws_secret_key: "{{ ec2_secret_key }}"
+          resource: "{{ item.id }}"
+          region: "{{ region }}"
+          state: "present"
+        with_items: "{{ ec2.instances }}"
+        args:
+          tags:
+            Type: webserver ansible
+
+      - name: Wait for SSH to come up
+        wait_for:
+          host: "{{ item.public_dns_name }}"
+          port: 22
+          delay: 60
+          state: started
+        with_items: "{{ ec2.instances }}"
