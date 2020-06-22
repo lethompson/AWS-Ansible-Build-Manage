@@ -157,3 +157,19 @@ Note: vpc_subnet_id is the subnet within an VPC
           groups: webservers
         with_items: "{{ ec2.instances }}"
 ```
+
+### Tag the AWS EC2 instance via Ansible
+
+```
+      - name: Add tag to Instance(s)
+        ec2_tag:
+          aws_access_key: "{{ ec2_access_key }}"
+          aws_secret_key: "{{ ec2_secret_key }}"
+          resource: "{{ item.id }}"
+          region: "{{ region }}"
+          state: "present"
+        with_items: "{{ ec2.instances }}"
+        args:
+          tags:
+            Type: webserver ansible
+```
