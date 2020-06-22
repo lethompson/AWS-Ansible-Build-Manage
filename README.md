@@ -197,3 +197,10 @@ Before running the playbook, need to configure the following:
 host_key_checking = False
 private_key_file = /home/thompsonl/.ssh/ansible_lennoxt.pem 
 ```
+
+### Run the ansible playbook
+
+```
+> ansible-playbook -i hosts --ask-vault-pass playbooks/aws_provisining.yml 
+
+```
