@@ -58,6 +58,6 @@ $ANSIBLE_VAULT;1.1;AES256
 To edit the aws_keys.yml via ansible-vault:
 
 ```
-thompsonl@thompsonl-VirtualBox:~/Desktop/AWS_Ansible_Config_2$ ansible-vault edit aws_keys.yml 
-Vault password: 
+> ansible-vault edit aws_keys.yml 
+Vault password: (provide your vault password)
 ```
