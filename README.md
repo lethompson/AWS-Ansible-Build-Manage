@@ -185,3 +185,15 @@ Note: vpc_subnet_id is the subnet within an VPC
           state: started
         with_items: "{{ ec2.instances }}"
 ```
+
+### Running the ansible playbook
+Before running the playbook, need to configure the following:
+* The private key that Ansible will use to connect to host
+* Override the default Ansible's configuration file, ansible.cfg
+
+### Create a new file called ansible.cfg in current working directory & add the following
+```
+[defaults]
+host_key_checking = False
+private_key_file = /home/thompsonl/.ssh/ansible_lennoxt.pem 
+```
