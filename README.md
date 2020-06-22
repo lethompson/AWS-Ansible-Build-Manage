@@ -173,3 +173,15 @@ Note: vpc_subnet_id is the subnet within an VPC
           tags:
             Type: webserver ansible
 ```
+
+### Ensure the creation process is complete for SSH daemon ready to receive connections
+
+```
+      - name: Wait for SSH to come up
+        wait_for:
+          host: "{{ item.public_dns_name }}"
+          port: 22
+          delay: 60
+          state: started
+        with_items: "{{ ec2.instances }}"
+```
