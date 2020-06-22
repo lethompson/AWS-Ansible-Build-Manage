@@ -18,7 +18,6 @@
 > sudo apt install python
 > sudo apt install python-pip
 > pip install python-boto python-boto3 ansible
-
 ```
 
 #### Note: Both boto & boto3 packages are needed 
@@ -77,4 +76,22 @@ localhost
 [webserver]
 localhost
 ```
+### Building the AWS EC2 instance via Ansible
 
+Create a new file called aws_provisioning.yml with the following:
+
+```
+---
+- hosts: local
+  connection: local
+  gather_facts: False
+  vars:
+    instance_type: t2.micro
+    security_group: webserver_ansible_sg
+    image: ami-b63769a1
+    keypair: ansible_lennoxt
+    region: us-east-1
+    count: 1
+  vars_files:
+    - aws_keys.yml
+```
