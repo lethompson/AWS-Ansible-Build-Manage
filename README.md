@@ -6,6 +6,18 @@
 * Create an IAM role and obtain your access and secret keys
 * Generate a public/private key pair
 
+```
+.
+├── hosts
+├── playbooks
+│   ├── aws_provisioning.yml
+│   ├── ec2-aws-stop.yml
+│   └── ec2-aws-terminate.yml
+└── README.md
+
+1 directory, 5 files
+```
+
 ### Objective using Ansible
 * Create a security group for the environment and add appropriate rules
 * Launch an EC2 instance based on the type and region
