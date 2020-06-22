@@ -147,3 +147,5 @@ Notes: vpc_id is the VPC of an existing environment already created or it could 
           vpc_subnet_id: subnet-cf2372b9
         register: ec2
 ```
+Note: vpc_subnet_id is the subnet within an VPC
+
