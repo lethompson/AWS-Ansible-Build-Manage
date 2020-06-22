@@ -61,3 +61,21 @@ To edit the aws_keys.yml via ansible-vault:
 > ansible-vault edit aws_keys.yml 
 Vault password: (provide your vault password)
 ```
+
+### Setting up the hosts file for Ansible
+
+```
+> vi hosts
+
+```
+
+Contents inside hosts file to handle new EC2 instance
+
+```
+[local]
+localhost
+
+[webserver]
+localhost
+```
+
