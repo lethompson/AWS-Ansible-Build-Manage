@@ -1,4 +1,4 @@
-# AWS-Ansible Build Manage
+# AWS Ansible Build Manage
 
 ### Prerequisites
 * Make an AWS Account
@@ -27,3 +27,13 @@
 
 after creating the IAM account and creating an IAM user that have access to EC2 instances. Need to store the AWS access/secret keys.
 
+```
+> ansible-vault create aws_keys.yml
+
+```
+Inside the aws_keys.yml file contains the following:
+
+```
+> ec2_access_key: <AWS ACCESS KEY>
+> ec2_secret_key: <AWS SECRET KEY>
+```
