@@ -149,3 +149,11 @@ Notes: vpc_id is the VPC of an existing environment already created or it could 
 ```
 Note: vpc_subnet_id is the subnet within an VPC
 
+### Adding a newly created instance to the hosts file via ansible
+```
+      - name: Add the newly created host
+        add_host:
+          name: "{{ item.public_ip }}"
+          groups: webservers
+        with_items: "{{ ec2.instances }}"
+```
